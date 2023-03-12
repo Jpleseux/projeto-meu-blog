@@ -1,0 +1,22 @@
+<h2 class="mt-4">Recent Posts</h2>
+<hr>
+{{#each postagens}}
+<div class="card mt-4">
+    <div class="card-body">
+        <h3>Title: {{titulo}}</h3>
+        <p>Description: {{descricao}}</p>
+        {{!-- <p>Slug: {{Slug}}</p>
+        <p>Content: {{conteudo}}</p> --}}
+        <a href="/postagem/{{Slug}}"><button class="btn btn-success">read more</button></a>
+        {{!-- <hr> --}}
+        {{!-- <small>Category: {{Slug}}</small>
+        <br> --}}
+        <br>
+        <h5>Categoria da postagem: {{categoria.nome}}</h5>
+        <hr>
+        <small>Date: {{data}}</small>
+    </div>
+</div>
+{{else}}
+<h5>No posts</h5>
+{{/each}}

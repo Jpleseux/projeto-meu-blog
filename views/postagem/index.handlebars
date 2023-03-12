@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="card-body">
+        <h1><strong>{{postagem.titulo}}</strong></h1>
+<hr>
+<small>Data de piblicação: {{postagem.data}}</small>
+<hr>
+ {{postagem.conteudo}}
+ <br>
+ <br>
+ <img class="rounded mx-auto d-block" src="./../uploads/users/{{postagem.img}}" alt="image" width="800" height="400">
+
+ <a style="float: right;" href="/"><button class="btn btn-success">Voltar para a pagina Home</button></a>
+     <h1>{{usuario}}</h1>
+    {{!-------------------------------------}}
+    <div class="container">
+      <div id="chat" class="chat">
+        {{#each msg}}
+
+        <li>
+          <strong>{{user}}</strong>: {{message}}
+        </li>
+
+        {{else}}
+
+        <h1>Sem mensagens
+        </h1>
+
+        {{/each}}
+      </div>
+    </div>
+    </div>
+        <ul id="messages"></ul>
+    <form class="mb-3" id="message-form">
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="message" placeholder="Mensagem" required>
+        </div>
+        <div class="col col-md-6">
+          <div>
+            <input type="hidden" class="form-control" name="user" value="{{usuario}}">
+          </div>
+          <button class="btn btn-success" type="submit">Enviar</button>
+        </div>
+      </div>
+    </form>
+</div>
+      <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const form = document.getElementById('message-form');
+      const messages = document.getElementById('messages');
+      
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const message = form.elements.message.value;
+        const user = form.elements.user.value;
+        socket.emit('new-message', {message, user});
+        form.elements.message.value = '';
+      });
+      
+      socket.on('new-message', data => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${data.user}: </strong>${data.message}`;
+        const div = document.getElementById("chat").appendChild(li)
+        
+      });
+    </script>

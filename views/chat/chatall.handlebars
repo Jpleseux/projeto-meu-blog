@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+  </head>
+  <style>
+    
+        .chat{
+
+       height: 300px;
+       overflow-y: scroll;
+       text-align: justify;
+    }
+  </style>
+  <body>
+    <h1 style="float: right;">Grupo: {{group.nome}}</h1>
+    <h1>Olá:{{usuario}}</h1>
+    {{!-------------------------------------}}
+    <div class="container">
+      <div id="chat" class="chat">
+        <h1>{{msg.message}}</h1>
+        
+        {{#each msg}}
+
+        <li>
+          <strong>{{user}}</strong>: {{message}}
+        </li>
+
+        {{else}}
+
+        <h1>Sem mensagens
+        </h1>
+
+        {{/each}}
+      </div>
+    </div>
+    <ul id="messages"></ul>
+    <form class="mb-3" id="message-form">
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" name="message" placeholder="Mensagem" required>
+        </div>
+        <div class="col col-md-6">
+          <div>
+            <input type="hidden" class="form-control" name="user" value="{{usuario}}">
+            <input type="hidden" name="group" id="group" value="{{group._id}}">
+          </div>
+          <button class="btn btn-success" type="submit">Enviar</button>
+        </div>
+      <div class="col">
+        
+      </div>
+      </div>
+    </form>
+        <form action="/users/group/deletar/{{group._id}}" method="post">
+            <button style="float: left;" class="btn btn-danger">Deletar dados do grupo</button>
+        </form>
+    <a style="float: right;" href="/chat"><button class="btn btn-success">Voltar para pagina home</button></a>
+    {{!-- <form action="/chat/img" id="imgs" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+                <label for="image" class="form-label">Caso deseje colocar uma imagem insira aqui</label>
+                <input class="form-control" type="file" name="file">
+        </div>
+        <button type="submit" class="btn btn-success">Enviar imagem</button>
+    </form> --}}
+  </body>
+      <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const form = document.getElementById('message-form');
+      const messages = document.getElementById('messages');
+      
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const chat = form.elements.group.value;
+        const message = form.elements.message.value;
+        const user = form.elements.user.value;
+        socket.emit('new-message', {message, user, chat});
+        form.elements.message.value = '';
+      });
+      
+      socket.on('new-message', data => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${data.user}: </strong>${data.message}`;
+        const div = document.getElementById("chat").appendChild(li)
+        
+      });
+    </script>
+</html>

@@ -1,0 +1,25 @@
+<div class="container mt-3">
+    <div class="mt-4 p-5 bg-primary text-white rounded">
+            <H1 class="display-4">Bem vindos ao Site Zeta</H1>
+    <p class="lead"></p>
+    <hr class="my-4">
+    <p>Este aqui é um site com principio de ser uma começo de uma rede social, </p>
+{{#if user}}
+    <div class="m-auto">
+        <a href="/users/logout">
+            <button type="button" class="btn btn-outline-dark">
+                Logout
+            </button>
+        </a>
+    </div>
+{{else}}
+    <div class="btn-group">
+        <p>Cadastre-se: </p>
+        <a href="/users/registro"><button type="button" class="btn btn-outline-dark">Created acount</button></a>
+        <p class="card-text">Ou faça login: </p>
+        <a href="/users/login"><button type="button" class="btn btn-outline-dark">Login</button></a>
+    </div>
+{{/if}}
+
+    </div>
+</div>
